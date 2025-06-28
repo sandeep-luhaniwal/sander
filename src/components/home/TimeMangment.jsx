@@ -9,9 +9,18 @@ const STAFF_LIST = [
     { id: 3, name: "Ankit Mehta" },
     { id: 4, name: "Divya Gupta" },
 ];
-const TimeMangment = () => {
+
+const TimeMangment = ({
+    selectedStaff,
+    setSelectedStaff,
+    selectedDate,
+    setSelectedDate,
+    selectedTime,
+    setSelectedTime,
+    handleNext,
+    error
+}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedStaff, setSelectedStaff] = useState(null);
 
     const handleSelect = (staff) => {
         setSelectedStaff(staff);
@@ -21,7 +30,6 @@ const TimeMangment = () => {
     return (
         <div className="w-full">
             <p className="font-lora text-base pb-2 font-semibold text-dark-black leading-110">Select Any Staff Member</p>
-
             <div className="relative">
                 <div
                     onClick={() => setIsOpen(!isOpen)}
@@ -34,7 +42,6 @@ const TimeMangment = () => {
                         <Icons icon={"ChevronDown"} />
                     </span>
                 </div>
-
                 {isOpen && (
                     <div className="absolute z-10 mt-2 w-full bg-white border border-light-white rounded-md shadow-lg max-h-60 overflow-auto">
                         {STAFF_LIST.map((staff) => (
@@ -49,8 +56,17 @@ const TimeMangment = () => {
                     </div>
                 )}
             </div>
-            <CalenderAndTime />
-            <button className='border mt-6 md:mt-8 lg:mt-9 rounded-lg cursor-pointer text-white duration-300 hover:text-green hover:bg-white border-green bg-green w-full py-[8.5px] font-lora text-lg md:text-xl'>
+
+            <CalenderAndTime
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+            />
+            {error && <p className='text-red-600 mt-4'>{error}</p>}
+            <button
+                onClick={handleNext}
+                className='border mt-6 md:mt-8 lg:mt-9 rounded-lg cursor-pointer text-white duration-300 hover:text-green hover:bg-white border-green bg-green w-full py-[8.5px] font-lora text-lg md:text-xl'>
                 Next
             </button>
         </div>

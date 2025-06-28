@@ -1,17 +1,35 @@
+'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Icons from '../common/Icons';
 import { APPOINTMENT_CHECK_DATA } from '../common/Helper';
 import TimeMangment from './TimeMangment';
 
 const ParmentMakeUp = () => {
-    const [checkedState, setCheckedState] = useState(
-        new Array(APPOINTMENT_CHECK_DATA.length).fill(false)
-    );
+    const router = useRouter();
+    const [checkedState, setCheckedState] = useState(new Array(APPOINTMENT_CHECK_DATA.length).fill(false));
+    const [selectedStaff, setSelectedStaff] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+    const [error, setError] = useState('');
 
     const handleCheckboxChange = (index) => {
         const updatedChecked = [...checkedState];
         updatedChecked[index] = !updatedChecked[index];
         setCheckedState(updatedChecked);
+    };
+
+    const handleNext = () => {
+        const anyChecked = checkedState.some(Boolean);
+        if (!anyChecked || !selectedStaff || !selectedDate || !selectedTime) {
+            setError("Please select at least one service, staff, date, and time.");
+        } else {
+            setError('');
+            const selectedServices = APPOINTMENT_CHECK_DATA.filter((_, i) => checkedState[i]);
+            const encodedDate = new Date(selectedDate).toISOString();
+            const encodedServices = encodeURIComponent(JSON.stringify(selectedServices));
+            router.push(`/payment?services=${encodedServices}&staff=${selectedStaff.name}&date=${encodedDate}&time=${selectedTime}`);
+        }
     };
 
     return (
@@ -31,16 +49,13 @@ const ParmentMakeUp = () => {
                                             type="checkbox"
                                             checked={isChecked}
                                             onChange={() => handleCheckboxChange(i)}
-                                            className="appearance-none w-[17px] min-w-[17px] h-[17px] duration-300 rounded-[2px] border border-dark-black cursor-pointer bg-light-gray checked:bg-white checked:border-green checked:after:content-['✔'] checked:after:block checked:after:text-green checked:after:text-xs checked:after:translate-x-[3px] checked:after:translate-y-[-0.5px]"
+                                            className="appearance-none w-[17px] min-w-[17px] h-[17px] duration-300 rounded-[2px] border border-dark-black cursor-pointer bg-light-gray checked:bg-white checked:border-green checked:after:content-['✓'] checked:after:block checked:after:text-green checked:after:text-xs checked:after:translate-x-[3px] checked:after:translate-y-[-0.5px]"
                                         />
                                         <p className='text-sm text-dark-black font-semibold leading-none'>
                                             {obj.desOne}
-                                            <span className='block'>
-                                                {obj.desTwo}
-                                            </span>
+                                            <span className='block'>{obj.desTwo}</span>
                                         </p>
                                     </div>
-
                                     <div className={`px-3 p-[5px] flex flex-col justify-center items-center max-w-[88px] duration-300 ${isChecked ? "bg-green" : "bg-info-gray"}`}>
                                         <p className='text-white text-nowrap leading-none text-sm font-bold'>{obj.price} €</p>
                                         <p className='text-white text-nowrap leading-none flex items-center text-[11px] font-normal font-lora'>
@@ -55,9 +70,20 @@ const ParmentMakeUp = () => {
                         )
                     })}
                 </div>
-                <TimeMangment />
-               
+
+                <TimeMangment
+                    selectedStaff={selectedStaff}
+                    setSelectedStaff={setSelectedStaff}
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                    selectedTime={selectedTime}
+                    setSelectedTime={setSelectedTime}
+                    handleNext={handleNext}
+                    error={error}
+                />
             </div>
+
+          
         </div>
     );
 };
