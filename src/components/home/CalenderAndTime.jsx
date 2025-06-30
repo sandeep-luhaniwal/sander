@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icons from '../common/Icons';
 
 const CalenderAndTime = ({ selectedDate, setSelectedDate, selectedTime, setSelectedTime }) => {
@@ -40,7 +40,25 @@ const CalenderAndTime = ({ selectedDate, setSelectedDate, selectedTime, setSelec
     };
 
     const isSameDay = (d1, d2) => d1 && d2 && d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
-    const isPastDate = (date) => date && new Date(date.setHours(0, 0, 0, 0)) < new Date(today.setHours(0, 0, 0, 0));
+
+    const isPastDate = (date) => {
+        if (!date) return false;
+        const todayMidnight = new Date();
+        todayMidnight.setHours(0, 0, 0, 0);
+
+        const dateMidnight = new Date(date);
+        dateMidnight.setHours(0, 0, 0, 0);
+
+        return dateMidnight < todayMidnight;
+    };
+    useEffect(() => {
+        const todayMidnight = new Date();
+        todayMidnight.setHours(0, 0, 0, 0);
+
+        if (!selectedDate || isPastDate(selectedDate)) {
+            setSelectedDate(todayMidnight);
+        }
+    }, []);
     const handleMonthChange = (offset) => {
         const newDate = new Date(currentDate);
         newDate.setMonth(currentDate.getMonth() + offset);
