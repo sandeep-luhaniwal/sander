@@ -22,7 +22,8 @@ body {
   --font-urbanist: "Urbanist", sans-serif;
   --font-lora: "Lora", serif;
   --font-dm: "DM Sans", sans-serif;
-  --leading-110: "100%";
+  --leading-110: "110%";
+  --leading-100: "100%";
   --color-dark-black: #0D1B34;
   --color-dark-gray: #D2D2D2;
   --color-info-gray: #9D9D9D;
@@ -33,4 +34,31 @@ body {
 
 .none_scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.custom-phone-input .PhoneInputInput {
+  width: 100%;
+  font-size: 0.875rem; /* text-sm */
+  color: #1d1d1f; /* text-dark-black */
+  background-color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+.custom-phone-input .PhoneInputCountrySelect {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin-right: 8px;
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
 }

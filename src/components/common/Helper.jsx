@@ -19,22 +19,22 @@ export const APPOINTMENT_TAB_DATA = [
     {
         icon: "makeup",
         title: "Permanent makeup",
-        allData: <ParmentMakeUp />,
+        
     },
     {
         icon: "bleaching",
         title: "Tooth Bleaching",
-        allData: "",
+       
     },
     {
         icon: "hair",
         title: "Permanent Hair Remo",
-        allData: "",
+       
     },
     {
         icon: "injection",
         title: "Injection lipolysis",
-        allData: "",
+       
     },
 ]
 

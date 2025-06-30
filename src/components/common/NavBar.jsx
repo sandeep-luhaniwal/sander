@@ -1,14 +1,24 @@
 "use client"
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NAVIGATION_DATA_LIST } from './Helper'
 import Icons from './Icons'
 
 const NavBar = () => {
     const [isNavOpen, setIsNavOpen] = useState(false)
+    useEffect(() => {
+        if (isNavOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isNavOpen]);
     return (
-        <div className='max-w-[1310px] px-4 mx-auto py-8 md:py-10 lg:py-12'>
+        <div className='max-w-[1310px] px-4 mx-auto pt-6 pb-8 md:pb-10 lg:pb-12'>
             <div className="flex justify-between">
                 <Link href={"/"}>
                     <Image
@@ -27,7 +37,7 @@ const NavBar = () => {
                             </Link>
                         )
                     })}
-                    <button className='text-white cursor-pointer font-urbanist text-[17px] py-2 px-5 md:py-[17px] md:px-[34px] bg-green hover:bg-dark-text-dark-black duration-300 rounded-2xl'>Hi Rana</button>
+                    <button className='text-white cursor-pointer font-urbanist text-[17px] px-5 py-2.5 md:px-[34px] bg-green hover:bg-dark-text-dark-black duration-300 rounded-xl border border-green hover:bg-transparent hover:text-green'>Hi Rana</button>
                     <div onClick={() => setIsNavOpen(true)} className='md:hidden cursor-pointer'>
                         <Icons icon={"menuToggel"} />
                     </div>
@@ -42,6 +52,7 @@ const NavBar = () => {
                         {NAVIGATION_DATA_LIST.map((obj, i) => {
                             return (
                                 <Link key={i} href={obj.url}
+                                    onClick={() => setIsNavOpen(false)}
                                     className='text-xl font-semibold font-urbanist leading-none text-white hover:text-dark-black duration-300'
                                 >
                                     {obj.title}

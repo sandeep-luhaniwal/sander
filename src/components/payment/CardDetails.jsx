@@ -4,6 +4,8 @@ import Icons from '../common/Icons';
 import CheckBoxGreen from '../common/CheckBoxGreen';
 import PopUp from '../common/PopUp';
 import { useRouter } from 'next/navigation';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 const GENDER_LIST = [
     { id: 1, name: "Male" },
@@ -145,7 +147,17 @@ const CardDetails = ({ formatDateTime }) => {
                     <div className='w-full md:w-1/2'>
                         <div className='rounded-[10px] border hover:border-green duration-300 border-light-white py-[9px] px-3 mt-[15px] md:mt-0'>
                             <label htmlFor="mobile" className='font-semibold cursor-pointer text-sm md:text-base text-green leading-none pb-[3px]'>Mobile Number</label>
-                            <input type="tel" id='mobile' name='mobile' value={formData.mobile} onChange={handleChange} placeholder='Enter Mobile Number' className='block w-full placeholder:text-[#C1C1C1] text-sm md:text-base text-dark-black outline-none' />
+                            <PhoneInput
+                                defaultCountry="IN"
+                                value={formData.mobile}
+                                onChange={(value) =>
+                                    setFormData((prev) => ({ ...prev, mobile: value }))
+                                }
+                                id="mobile"
+                                name="mobile"
+                                className="custom-phone-input outline-none border-none"
+                                international
+                            />
                         </div>
                         <div className='rounded-[10px] border hover:border-green duration-300 border-light-white py-[9px] px-3 mt-[15px]'>
                             <label htmlFor="comment" className='font-semibold cursor-pointer text-sm md:text-base text-green leading-none pb-[3px]'>
@@ -201,7 +213,7 @@ const CardDetails = ({ formatDateTime }) => {
                     Book Appointment
                 </button>
             </form>
-            {isOpenPopUp && <PopUp setIsOpenPopUp={setIsOpenPopUp} />}
+            {isOpenPopUp && <PopUp isOpenPopUp={isOpenPopUp} setIsOpenPopUp={setIsOpenPopUp} />}
         </div>
     );
 };
